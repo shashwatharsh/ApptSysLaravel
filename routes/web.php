@@ -23,3 +23,7 @@ Route::get('/category-create',[CategoryController::class,'create']);
 Route::post('/category-store',[CategoryController::class,'store']);
 Route::get('/category-edit/{id}',[CategoryController::class,'edit']);
 Route::put('/category-update/{id}',[CategoryController::class,'update']);
+Route::delete('/category-delete/{id}',[CategoryController::class,'destroy']);
+
+// Route for export/download tabledata to .csv, .xls or .xlsx
+Route::get('/exportExcel', [CategoryController::class, 'exportExcel'])->name('exportExcel');

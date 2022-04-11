@@ -16,15 +16,18 @@
                  <form action="/category-store" method="POST">
                    @csrf
                  <label for="name">Name</label>
-                 <input type="text" name="name" id="name" class="form-control">
+                 <input type="text" name="name" id="name" class="form-control" required>
                  <!-- <label for="email">Email</label>
                  <input type="text" name="email" id="email" class="form-control"> -->
                  <label for="email">Email</label>
                  <input type="email" name="email" id="email" class="form-control">
                  <label for="number">Number</label>
                  <input type="tel" name="number" id="number" class="form-control">
-                 <label for="Reason">Reason</label>
-                 <input type="text" name="Reason" id="Reason" class="form-control">
+                 @if($errors->has('number'))
+                    <p class="text-danger">{{ $errors->first('number')}}</p>
+                  @endif
+                 <label for="Reason" >Reason</label>
+                 <input type="text" name="Reason" id="Reason" class="form-control" required>
                  <label for="date">Date</label>
                  <input type="datetime-local" name="date" id="date" class="form-control">
                  
