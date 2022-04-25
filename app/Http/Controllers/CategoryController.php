@@ -4,14 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestEmail;
+use App\Mail\UpdateAppMsg;
+// use App\Http\Controllers\Auth;
 
 class CategoryController extends Controller
 {
+    
+    public function excelinit(){
+        return view('imexp.excel');
+    }
+    public function excelexport(){
+        dd('exportfjealj'); 
+    }
     //
     public function index(){
+        // if(Auth::check()){
 
         $categories = Category::latest()->paginate(5);
         return view('categories.list',['categories'=>$categories]);
+        // }
+        // return redirect("login")->withSuccess('You are not allowed to access');
     }
 
     public function create(){
@@ -33,8 +47,21 @@ class CategoryController extends Controller
         $category->Reason = $request->Reason;
         $category->date = $request->date;
         $category->save();
+        CategoryController::sendmailforapp($category);
         return redirect('/')->withSuccess('New Appointment Created');
     }
+    // Send mail
+    public function sendmailforapp($categories){
+        $mailData = $categories;
+        Mail::to($mailData->email)->send(new TestEmail($mailData));
+        // dd('Mail sent Sucessfully');
+    }
+    public function updateappmsg($categories){
+        $mailData = $categories;
+        Mail::to($mailData->email)->send(new UpdateAppMsg($mailData));
+        // dd('Mail sent Sucessfully');
+    }
+
     public function edit($id){
         // dd($id);
         $category = Category::where('id',$id)->first();
@@ -50,7 +77,8 @@ class CategoryController extends Controller
         $category->date = $request->date;
         $category->status = $request->status;
         $category->save();
-        return redirect('/')->withSuccess('Value Sucessfully Updated');
+        CategoryController::updateappmsg($category);
+        return redirect('/')->withSuccess('Value Updated Sucessfully');
 
 
     }
